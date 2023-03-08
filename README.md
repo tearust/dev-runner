@@ -28,15 +28,17 @@ npx hardhat --network localdocker run scripts/deploy_alpha.js
 ### Prepare your custom actors
 If you have any custom wasm actors needed to be loaded, please place them in the directory `local`.
 
-### (Option1) Run with server mode
-Server mode will run the tests without iteractions, you can run with server mode simply like the following:
+### (Option 1) Run with server (non-interactive) mode
+Server mode will run the tests without interactions. You won't be able use CLI in this case. 
+
+You can run with server mode simply like the following:
 ```
 cd single-node
 docker compose up
 ```
 (If you installed `docker-compose` please replace the `docker compose up` command with `docker-compose up`)
 
-### (Option2) Run the interactive mode
+### (Option 2) Run the interactive mode
 First run the whole docker compose:
 ```
 cd single-cli
