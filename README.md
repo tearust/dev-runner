@@ -26,38 +26,24 @@ npx hardhat --network localdocker run scripts/deploy_alpha.js
 ## Running the tests
 
 ### Prepare your custom actors
-If you have any custom wasm actors needed to be loaded, please place them in the directory `local`.
+If you have any custom wasm actors needed to be loaded, please place them in the directory `local` (if test on A node should in `a-node` subdirectory, and if test on B node should in `b-node` subdirectory).
 
-### (Option 1) Run with server (non-interactive) mode
+### Run with server
 Server mode will run the tests without interactions. You won't be able use CLI in this case. 
 
 You can run with server mode simply like the following:
 ```
-cd single-node
 docker compose up
 ```
 (If you installed `docker-compose` please replace the `docker compose up` command with `docker-compose up`)
 
-### (Option 2) Run the interactive mode
-First run the whole docker compose:
+After started you should have two nodes (one is A node and one is B node) running within the docker compose services. 
+You can test HTTP interface of the B nodes with default port of "8000" simply like the following:
 ```
-cd single-cli
-docker compose up
-```
-(If you installed `docker-compose` please replace the `docker compose up` command with `docker-compose up`)
-
-Then enter into the client docker service using the following command:
-```
-docker exec -it parent-instance-client /bin/bash
+curl -H "Content-Type: application/json" -d '{"actor": "someone.sample", "address": "0x0000000000000000000000000000000000000000"}' http://localhost:8000/say-hello
 ```
 
-Then use the following command to start client manually:
+And you can test HTTP interface of the A nodes with default port of "8001" simply like the following:
 ```
-./app
+curl -H "Content-Type: application/json" -d '{"actor": "someone.sample", "address": "0x0000000000000000000000000000000000000000"}' http://localhost:8001/say-hello
 ```
-
-After all actors initialized successfully, you can type commands to interact with the runtime like the following:
-```
-libp2p id
-```
-and the above command will give you the current node's connection id.
