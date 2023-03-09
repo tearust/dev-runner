@@ -1,0 +1,108 @@
+version: "3.1"
+
+networks:
+  alice-internal:
+    internal: true
+  bob-internal:
+    internal: true
+  external-hub:
+services:
+  # ################ Runtime  ##############
+  runtime-alice:
+    image: tearust/runtime:dev
+    container_name: "runtime-alice"
+    networks:
+      - alice-internal
+    volumes:
+      - ./local/a-node:/wasm-local
+    environment:
+      RUST_BACKTRACE: full
+      CLIENT_HOST: client-alice
+      MALLOC_CONF: prof:true
+      RUST_LOG: INFO,wasmer=WARN,regalloc2=WARN
+
+  runtime-bob:
+    image: tearust/runtime:dev
+    container_name: "runtime-bob"
+    networks:
+      - bob-internal
+    volumes:
+      - ./local/b-node:/wasm-local
+    environment:
+      RUST_BACKTRACE: full
+      CLIENT_HOST: client-bob
+      MALLOC_CONF: prof:true
+      RUST_LOG: INFO,wasmer=WARN,regalloc2=WARN
+
+  client-alice:
+    image: tearust/parent-instance-client:dev
+    container_name: "client-alice"
+    networks:
+      - external-hub
+      - alice-internal
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - 8001:8000
+    volumes:
+      - .tokenstate:/tokenstate
+      - .libp2p:/libp2p
+      - .layer1:/layer1
+      - ./data:/tearust/data
+    environment:
+      ENCLAVE_HOST: runtime-alice
+      SELF_HOST: client-alice
+      GENESIS_CONFIG_PATH: /tearust/data/genesis.json
+      LAYER1_WS_PROVIDER_URL: ws://host.docker.internal:8545/
+      LAYER1_KEY_PATH: /layer1/key
+      LASTEST_TOPUP_HEIGHT: 1
+      TEA_ID: "0x0000000000000000000000000000000000000000000000000000000000000000"
+      MACHINE_OWNER: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+      LIBP2P_NODE_KEY_PATH: /libp2p/alice/key
+      LIBP2P_ENABLE_MDNS: "true"
+      LIBP2P_SUPPORTED_PROTOCOLS: local0.1
+      LIBP2P_AGENT_PROTOCOL: local0.1
+      LIBP2P_VERSION: 1.0
+      APPLY_VALIDATOR: "true"
+      STATE_MAGIC_NUMBER: 100
+      PERSIST_PATH: /tokenstate/persist
+      RUST_BACKTRACE: full
+      MALLOC_CONF: prof:true
+      LOCAL_WASM_FOLDER: /wasm-local
+
+      WAIT_HOSTS: runtime-alice:5005
+      WAIT_TIMEOUT: 300
+      WAIT_SLEEP_INTERVAL: 5
+
+  client-bob:
+    image: tearust/parent-instance-client:dev
+    container_name: "client-bob"
+    networks:
+      - external-hub
+      - bob-internal
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - 8000:8000
+    volumes:
+      - .libp2p:/libp2p
+      - ./data:/tearust/data
+    environment:
+      ENCLAVE_HOST: runtime-bob
+      SELF_HOST: client-bob
+      GENESIS_CONFIG_PATH: /tearust/data/genesis.json
+      TEA_ID: "0x0000000000000000000000000000000000000000000000000000000000000001"
+      MACHINE_OWNER: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+      LIBP2P_NODE_KEY_PATH: /libp2p/bob/key
+      LIBP2P_ENABLE_MDNS: "true"
+      LIBP2P_SUPPORTED_PROTOCOLS: local0.1
+      LIBP2P_AGENT_PROTOCOL: local0.1
+      LIBP2P_VERSION: 1.0
+      STATE_MAGIC_NUMBER: 100
+      RUST_BACKTRACE: full
+      MALLOC_CONF: prof:true
+      LOCAL_WASM_FOLDER: /wasm-local
+
+      WAIT_HOSTS: runtime-bob:5005, client-alice:8000
+      WAIT_TIMEOUT: 300
+      WAIT_SLEEP_INTERVAL: 5
