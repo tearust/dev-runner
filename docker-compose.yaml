@@ -47,16 +47,14 @@ services:
     volumes:
       - .tokenstate:/tokenstate
       - .libp2p:/libp2p
-      - .layer1:/layer1
       - ./data:/tearust/data
     environment:
       ENCLAVE_HOST: runtime-alice
       SELF_HOST: client-alice
       GENESIS_CONFIG_PATH: /tearust/data/genesis.json
-      LAYER1_WS_PROVIDER_URL: ws://host.docker.internal:8545/
-      LAYER1_KEY_PATH: /layer1/key
+      GENESIS_SETTINGS_PATH: /tearust/data/genesis-registry.json
       LASTEST_TOPUP_HEIGHT: 1
-      TEA_ID: "0x0000000000000000000000000000000000000000000000000000000000000000"
+      TEA_ID: "0x0000000000000000000000000000000000000000000000000000000000000001"
       MACHINE_OWNER: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
       LIBP2P_NODE_KEY_PATH: /libp2p/alice/key
       LIBP2P_ENABLE_MDNS: "true"
@@ -91,7 +89,7 @@ services:
       ENCLAVE_HOST: runtime-bob
       SELF_HOST: client-bob
       GENESIS_CONFIG_PATH: /tearust/data/genesis.json
-      TEA_ID: "0x0000000000000000000000000000000000000000000000000000000000000001"
+      TEA_ID: "0x0000000000000000000000000000000000000000000000000000000000000000"
       MACHINE_OWNER: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
       LIBP2P_NODE_KEY_PATH: /libp2p/bob/key
       LIBP2P_ENABLE_MDNS: "true"

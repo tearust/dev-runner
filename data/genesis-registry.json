@@ -1,0 +1,19 @@
+{
+	"tappstore_owner": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+	"startup_nodes": [
+		[
+			0,
+			"127.0.0.3"
+		]
+	],
+	"knowing_cmls": [
+		{
+			"id": 0,
+			"owner": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+			"attribute": {
+				"l": 5256000,
+				"p": 10000
+			}
+		}
+	]
+}

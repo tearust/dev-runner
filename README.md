@@ -2,26 +2,6 @@
 ## Pre-requisites
 - git
 - docker: install docker and "docker compose"
-- Node.js & hardhat: please following the hardhat install tutorial [here](https://hardhat.org/tutorial)
-
-## Prepare dummy layer1
-
-We should prepare the dummy(local) ethereum layer before running the tests.
-
-First clone our layer1 contract repository:
-```
-git clone https://github.com/tearust/eth_layer1
-```
-
-Then cd into the contract repository and run the following to start dummy layer1:
-```
-npx hardhat node --hostname 0.0.0.0
-```
-
-Finally, in another terminal (and the same directory) run the following to init contracts:
-```
-npx hardhat --network localdocker run scripts/deploy_alpha.js
-```
 
 ## Running the tests
 
