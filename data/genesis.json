@@ -6,7 +6,7 @@
 		"token_vesting": "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
 		"erc721": "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6"
 	},
-	"tappstore_id": "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
+	"tappstore_id": "0x44809c2da3f17c436d6c1f771784c35335f95242",
 	"chain_id": 31337,
 	"mining_startup_nodes": [
 		{
