@@ -9,7 +9,7 @@ networks:
 services:
   # ################ Runtime  ##############
   runtime-alice:
-    image: tearust/runtime:dev
+    image: tearust/runtime:dev-22
     container_name: "runtime-alice"
     networks:
       - alice-internal
@@ -22,7 +22,7 @@ services:
       RUST_LOG: INFO,wasmer=WARN,regalloc2=WARN
 
   runtime-bob:
-    image: tearust/runtime:dev
+    image: tearust/runtime:dev-22
     container_name: "runtime-bob"
     networks:
       - bob-internal
@@ -35,7 +35,7 @@ services:
       RUST_LOG: INFO,wasmer=WARN,regalloc2=WARN
 
   client-alice:
-    image: tearust/parent-instance-client:dev
+    image: tearust/parent-instance-client:dev-22
     container_name: "client-alice"
     networks:
       - external-hub
@@ -45,7 +45,7 @@ services:
     ports:
       - 8001:8000
     volumes:
-      - .tokenstate:/tokenstate
+      # - .tokenstate:/tokenstate
       - .libp2p:/libp2p
       - ./data:/tearust/data
     environment:
@@ -73,7 +73,7 @@ services:
       WAIT_SLEEP_INTERVAL: 5
 
   client-bob:
-    image: tearust/parent-instance-client:dev
+    image: tearust/parent-instance-client:dev-22
     container_name: "client-bob"
     networks:
       - external-hub
